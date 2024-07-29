@@ -1,0 +1,81 @@
+server:
+  port: 8001
+  servlet:
+    context-path: /api/v1/library
+spring:
+  application:
+    name: book-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: "http://localhost:9000/api/v1/library"
+      client:
+        registration:
+          client-app:
+            provider: spring
+            client-id: client-app
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8001/api/v1/library/authorized"
+            scope:
+              - openid
+              - profile
+            client-name: client-app
+        provider:
+          spring:
+            issuer-uri: "http://localhost:9000/api/v1/library"
+  datasource:
+    url: jdbc:mysql://localhost:3306/${MSQL_DATABASE}
+    username: root
+    password: ${MSQL_PASS}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 50
+      minimum-idle: 5
+      idle-timeout: 30000
+      pool-name: HikariCP
+      max-lifetime: 2000000
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${application.email}
+    password: ${EMAIL_PASS}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            trust: smtp.gmail.com
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+eureka:
+  #  instance:
+  #    instance-id: ${spring.application.name}:${server.port}
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL}
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+application:
+  name: library - book service
+  version: 0.1.0
+  developer: caito Vilas
+  email: caitocd@gmail.com

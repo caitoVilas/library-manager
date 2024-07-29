@@ -1,0 +1,4 @@
+MSQL_DATABASE  library
+MSQL_PASS
+EUREKA_URL http://localhost:8761/eureka
+EMAIL_PASS cknldtamtqvslhlg
